@@ -1,0 +1,47 @@
+version: '3'
+
+tasks:
+  default: # can be triggered without specifying the task name
+    cmds:
+      - task: serve
+  serve:
+    desc: Start hugo in docker # see https://docker.hugomods.com/docs/development/docker-run/
+    cmds:
+      - docker run
+          -p 8080:8080
+          -v ${PWD}:/src
+          hugomods/hugo:exts
+          hugo server --bind 0.0.0.0 -p 8080 --source /src/website -b http://localhost:8080/pages/VFDE-SOL/docs-sol-cet --cleanDestinationDir
+  install-docsy:
+    desc: Install Latest Docsy theme
+    dir: website
+    cmds:
+      - mkdir -p themes/hugo-docsy/
+      - curl -s https://api.github.com/repos/google/docsy/releases/latest
+          | grep "tarball_url"
+          | cut -d '"' -f 4
+          | xargs curl -sL
+          | tar -xz --strip-components=1 -C themes/hugo-docsy/
+
+      - rm -fr themes/hugo-docsy/.*
+      - docker run
+          -v ${PWD}:/src
+          --workdir "/src/themes/hugo-docsy"
+          hugomods/hugo:exts
+          npm install
+
+      # Create .gitkeep files to keep the depended themes in git (see themes/hugo-docsy/package.json)
+      - touch themes/github.com/FortAwesome/Font-Awesome/.gitkeep
+      - touch themes/github.com/twbs/bootstrap/.gitkeep
+  serve-local:
+    desc: Start hugo serve locally
+    dir: website
+    cmds:
+      - hugo version | grep extended &>/dev/null || (echo "Please install hugo extended version" && exit 1)
+      - hugo serve -b http://localhost:8080/pages/VFDE-SOL/docs-sol-cet -p 8080
+  set_node_version:
+    desc: Use current Node version in .node-version file
+    cmds:
+      - node --version > .node-version
+      - ( cd website ; npm install --silent --package-lock-only)
+      - ( cd website/themes/hugo-docsy ; npm install --silent --package-lock-only)
