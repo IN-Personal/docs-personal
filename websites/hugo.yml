@@ -1,0 +1,54 @@
+title: IN Personal
+theme: hugo-docsy
+enableRobotsTXT: true
+enableGitInfo: true
+
+defaultContentLanguage: en
+
+markup:
+  goldmark:
+    parser:
+      attribute:
+        block: true
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false # Required for dark-mode
+
+taxonomies:
+  tag: tags
+  category: categories
+
+params:
+  github_repo: https://github.com/IN-Personal/docs-personal
+  github_subdir: website
+  github_branch: master
+  offlineSearch: true
+  ui:
+    showLightDarkModeMenu: true
+    breadcrumb_disable: false
+    navbar_logo: true
+    navbar_translucent_over_cover_disable: false
+    sidebar_menu_compact: true
+    sidebar_search_disable: false
+    feedback:
+      enable: true
+      'yes': >-
+        Glad to hear it! Please <a href="https://github.com/IN-Personal/docs-personal/issues/new"">
+        tell us how we can improve</a>.
+      'no': >-
+        Sorry to hear that. Please <a href="https://github.com/IN-Personal/docs-personal/issues/new"">
+        tell us how we can improve</a>.
+  copyright:
+    authors: Self
+    from_year: 2024
+  links:
+    developer:
+      - name: GitHub
+        url: https://github.com/IN-Personal
+        icon: fab fa-github
+        desc: Development takes place here!
+      - name: Teams Channel
+        url: https://teams.microsoft.com
+        icon: fab fa-microsoft
+        desc: Chat with other project developers
